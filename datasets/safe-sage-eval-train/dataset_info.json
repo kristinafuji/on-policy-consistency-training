@@ -1,0 +1,62 @@
+{
+  "builder_name": "csv",
+  "citation": "",
+  "config_name": "default",
+  "dataset_name": "safe-sage-eval",
+  "dataset_size": 8582921,
+  "description": "",
+  "download_checksums": {
+    "hf://datasets/YuehHanChen/Safe-SAGE-Eval@b59c1d6fe66546e2d43ff006e9124321a75853c3/safe_full_dataset.csv": {
+      "num_bytes": 8485171,
+      "checksum": null
+    }
+  },
+  "download_size": 8485171,
+  "features": {
+    "safety_fact": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "source": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "category": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "prompt_type": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "augmentation": {
+      "dtype": "bool",
+      "_type": "Value"
+    },
+    "augmentation_type": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "prompt": {
+      "dtype": "string",
+      "_type": "Value"
+    }
+  },
+  "homepage": "",
+  "license": "",
+  "size_in_bytes": 17068092,
+  "splits": {
+    "train": {
+      "name": "train",
+      "num_bytes": 8582921,
+      "num_examples": 11115,
+      "dataset_name": "safe-sage-eval"
+    }
+  },
+  "version": {
+    "version_str": "0.0.0",
+    "major": 0,
+    "minor": 0,
+    "patch": 0
+  }
+}

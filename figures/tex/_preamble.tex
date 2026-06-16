@@ -1,0 +1,152 @@
+% Shared preamble fragment.
+% Loaded from sageeval-figures.tex — don't compile this file directly.
+%
+% Defines the palette, typography, and reusable pgfplots styles used by every
+% figure. Keeping this in one place keeps the per-figure files short and
+% prevents palette drift between figures.
+
+% ---- Typography ---------------------------------------------------------
+\usepackage{fontspec}
+\setmainfont[
+  Path=fonts/,
+  UprightFont=AlegreyaSans-Regular.ttf,
+  BoldFont=AlegreyaSans-Bold.ttf,
+  ItalicFont=AlegreyaSans-Regular.ttf,
+  BoldItalicFont=AlegreyaSans-Bold.ttf,
+]{AlegreyaSans}
+\setsansfont[
+  Path=fonts/,
+  UprightFont=AlegreyaSans-Regular.ttf,
+  BoldFont=AlegreyaSans-Bold.ttf,
+]{AlegreyaSans}
+\renewcommand{\familydefault}{\sfdefault}
+
+% ---- TikZ / pgfplots ----------------------------------------------------
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepgfplotslibrary{groupplots, fillbetween, colormaps}
+\usetikzlibrary{patterns, positioning}
+
+% ---- Method palette (pastel fill / saturated line) ----------------------
+% Kept visually consistent with view_sweep1.py's METHOD_COLORS semantics:
+% OPD family = blues, SFT family = greens, SFT+OPD = purple,
+% baselines = gray (Teacher) and olive (Vanilla).
+\definecolor{opdE1Line}{HTML}{5FA7CF}
+\definecolor{opdE1Fill}{HTML}{BFDEF1}
+\definecolor{opdFinalLine}{HTML}{2B7CB8}
+\definecolor{opdFinalFill}{HTML}{9BC6E3}
+\definecolor{sftLine}{HTML}{4A9C4A}
+\definecolor{sftFill}{HTML}{B9DDB5}
+\definecolor{sftE1Line}{HTML}{7BB56A}
+\definecolor{sftE1Fill}{HTML}{D5EBCA}
+\definecolor{sftOpdLine}{HTML}{7C5BA8}
+\definecolor{sftOpdFill}{HTML}{C7B3D9}
+\definecolor{teacherLine}{HTML}{707070}
+\definecolor{teacherFill}{HTML}{D0D0D0}
+\definecolor{vanillaLine}{HTML}{8E8A31}
+\definecolor{vanillaFill}{HTML}{E0DDAE}
+% Base-model-reference color (used in regression bar charts). Distinct from
+% vanilla/teacher to read as "pre-training baseline", not a training variant.
+\definecolor{baselineLine}{HTML}{3E4A58}
+\definecolor{baselineFill}{HTML}{AFB6BF}
+\definecolor{gridMuted}{HTML}{DDDDDD}
+\definecolor{axisEdge}{HTML}{555555}
+\definecolor{todoGray}{HTML}{AAAAAA}
+
+% Sequential colormap for the safety heatmap (pass-rate 0..1). Light neutral
+% at the low end, saturated green at the high end.
+\pgfplotsset{
+  colormap={safetyHeat}{
+    rgb255=(233,235,230)
+    rgb255=(180,214,180)
+    rgb255=(110,180,120)
+    rgb255=(40,130,80)
+  }
+}
+
+% ---- Base axis styling --------------------------------------------------
+\pgfplotsset{
+  every axis/.append style={
+    axis line style={axisEdge, line width=0.6pt},
+    tick style={axisEdge, line width=0.6pt},
+    tick label style={font=\small},
+    label style={font=\small},
+    title style={font=\small\bfseries, yshift=-1pt},
+    legend style={
+      font=\small,
+      draw=none,
+      fill=none,
+      cells={anchor=west},
+      /tikz/every even column/.append style={column sep=4pt},
+    },
+    axis on top,
+    axis x line*=bottom,
+    axis y line*=left,
+  },
+}
+
+% Per-method line + marker styles. `method=*,*` is applied inside each plot.
+\pgfplotsset{
+  sty/opd_e1/.style={color=opdE1Line, mark=*, mark size=1.6pt,
+                     mark options={fill=opdE1Line, draw=white, line width=0.6pt},
+                     line width=1.4pt},
+  sty/opd_final/.style={color=opdFinalLine, mark=*, mark size=1.6pt,
+                     mark options={fill=opdFinalLine, draw=white, line width=0.6pt},
+                     line width=1.4pt},
+  sty/sft/.style={color=sftLine, mark=*, mark size=1.6pt,
+                     mark options={fill=sftLine, draw=white, line width=0.6pt},
+                     line width=1.4pt},
+  sty/sft_e1/.style={color=sftE1Line, mark=*, mark size=1.6pt,
+                     mark options={fill=sftE1Line, draw=white, line width=0.6pt},
+                     line width=1.4pt},
+  sty/sft_opd/.style={color=sftOpdLine, mark=*, mark size=1.6pt,
+                     mark options={fill=sftOpdLine, draw=white, line width=0.6pt},
+                     line width=1.4pt},
+  sty/teacher/.style={color=teacherLine, mark=square*, mark size=1.4pt,
+                     mark options={fill=teacherLine, draw=white, line width=0.6pt},
+                     line width=1.2pt, dashed},
+  sty/vanilla/.style={color=vanillaLine, mark=square*, mark size=1.4pt,
+                     mark options={fill=vanillaLine, draw=white, line width=0.6pt},
+                     line width=1.2pt, dashed},
+}
+
+% Per-method CI band fills (used with fillbetween).
+\pgfplotsset{
+  fill/opd_e1/.style={fill=opdE1Fill, opacity=0.35, draw=none},
+  fill/opd_final/.style={fill=opdFinalFill, opacity=0.35, draw=none},
+  fill/sft/.style={fill=sftFill, opacity=0.35, draw=none},
+  fill/sft_e1/.style={fill=sftE1Fill, opacity=0.30, draw=none},
+  fill/sft_opd/.style={fill=sftOpdFill, opacity=0.35, draw=none},
+  fill/teacher/.style={fill=teacherFill, opacity=0.25, draw=none},
+  fill/vanilla/.style={fill=vanillaFill, opacity=0.25, draw=none},
+}
+
+% Bar fills for AUSC + regression charts (darker edge, pastel interior).
+\pgfplotsset{
+  bar/opd_e1/.style={fill=opdE1Fill, draw=opdE1Line, line width=0.6pt},
+  bar/opd_final/.style={fill=opdFinalFill, draw=opdFinalLine, line width=0.6pt},
+  bar/sft/.style={fill=sftFill, draw=sftLine, line width=0.6pt},
+  bar/sft_e1/.style={fill=sftE1Fill, draw=sftE1Line, line width=0.6pt},
+  bar/sft_opd/.style={fill=sftOpdFill, draw=sftOpdLine, line width=0.6pt},
+  bar/teacher/.style={fill=teacherFill, draw=teacherLine, line width=0.6pt},
+  bar/vanilla/.style={fill=vanillaFill, draw=vanillaLine, line width=0.6pt},
+  bar/baseline/.style={fill=baselineFill, draw=baselineLine, line width=0.6pt},
+}
+
+% TODO overlay — used when an entire panel has no data.
+\newcommand{\TODOoverlay}[1][]{%
+  \node[#1, anchor=center, font=\bfseries\large, text=todoGray]
+    at (rel axis cs:0.5,0.5) {TODO};
+}
+
+% Unified bar style applied via `every axis/.append style` so it survives
+% the groupplot's option-parser evaluation order (pgfplots won't accept
+% `bar width=...` in the groupplot option list itself — `ybar` must be
+% activated first, and that only happens per-axis).
+\pgfplotsset{
+  barPanel/.style={
+    ybar,
+    bar width=10pt,
+  },
+}

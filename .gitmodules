@@ -1,0 +1,6 @@
+[submodule "tinker-cookbook"]
+	path = tinker-cookbook
+	url = git@github.com:thinking-machines-lab/tinker-cookbook.git
+[submodule "overleaf"]
+	path = overleaf
+	url = https://git@git.overleaf.com/69dfaced9ffcf71b1cf29ced

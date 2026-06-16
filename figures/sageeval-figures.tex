@@ -1,0 +1,70 @@
+% Paper-figures driver. Compile with:
+%   latexmk -xelatex -interaction=nonstopmode sageeval-figures.tex
+% or run `figures/scripts/build.sh` which also regenerates the .dat files.
+%
+% Page layout (referenced by overleaf/main.tex by \includegraphics[page=N]):
+%   p1  main-body  SAGE-Eval AUSC (4-method)
+%   p2  main-body  Safe-SAGE-Eval AUSC (4-method)
+%   p3  main-body  Regression evals (SFT / OPD (e1) / baseline)
+%   p4  appendix   SAGE-Eval safety curves (6-method, SFT+OPD dropped)
+%   p5  appendix   SAGE-Eval safety curves (selected 4-method)
+%   p6  appendix   Safe-SAGE-Eval safety curves (6-method)
+%   p7  appendix   Safe-SAGE-Eval safety curves (selected 4-method)
+%
+% Heatmap figure files (tex/heatmap_sage.tex, tex/heatmap_safe_sage.tex)
+% are preserved in the repo but deliberately not included here — they're
+% out of scope for the current paper draft.
+
+\documentclass[a4paper,landscape,11pt]{article}
+\usepackage[margin=1.2cm]{geometry}
+\usepackage{float}
+
+\input{tex/_preamble.tex}
+
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+
+\begin{document}
+
+% ---- Page 1: main-body SAGE AUSC ---------------------------------------
+\begin{figure}[H]\centering
+  \input{tex/ausc_sage.tex}
+\end{figure}
+
+\newpage
+% ---- Page 2: main-body Safe-SAGE AUSC ----------------------------------
+\begin{figure}[H]\centering
+  \input{tex/ausc_safe_sage.tex}
+\end{figure}
+
+\newpage
+% ---- Page 3: main-body regression bars ---------------------------------
+\begin{figure}[H]\centering
+  \input{tex/regression_bars.tex}
+\end{figure}
+
+\newpage
+% ---- Page 4: appendix SAGE safety curves (full, minus SFT+OPD) ---------
+\begin{figure}[H]\centering
+  \input{tex/safety_curves_sage.tex}
+\end{figure}
+
+\newpage
+% ---- Page 5: appendix SAGE safety curves (selected 4-method) -----------
+\begin{figure}[H]\centering
+  \input{tex/safety_curves_sage_selected.tex}
+\end{figure}
+
+\newpage
+% ---- Page 6: appendix Safe-SAGE safety curves --------------------------
+\begin{figure}[H]\centering
+  \input{tex/safety_curves_safe_sage.tex}
+\end{figure}
+
+\newpage
+% ---- Page 7: appendix Safe-SAGE safety curves (selected 4-method) ------
+\begin{figure}[H]\centering
+  \input{tex/safety_curves_safe_sage_selected.tex}
+\end{figure}
+
+\end{document}

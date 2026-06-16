@@ -1,0 +1,28 @@
+[project]
+name = "on-policy"
+version = "0.1.0"
+description = "On-policy distillation training using Tinker API"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "python-dotenv",
+    "tinker_cookbook",
+    "httpx",
+    "streamlit",
+    "pandas",
+    "matplotlib>=3.10.7",
+    "wandb",
+    "google-genai>=1.56.0",
+    "plotly>=6.5.1",
+    "nltk>=3.8",
+    "langdetect>=1.0.9",
+    "absl-py>=2.0",
+    "immutabledict>=4.0",
+    "math-verify[antlr4_13_2]>=0.5",
+]
+
+[project.optional-dependencies]
+wandb = ["wandb"]
+
+[tool.uv.sources]
+tinker_cookbook = { path = "tinker-cookbook", editable = true }

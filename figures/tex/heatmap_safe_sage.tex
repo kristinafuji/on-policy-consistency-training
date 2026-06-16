@@ -1,0 +1,49 @@
+% Safe-SAGE per-fact pass-rate heatmap — 3 panels (one per model family).
+% Same layout as heatmap_sage.tex; 144 facts per panel for the Llama/Qwen
+% rows, 0 for GPT-OSS (entire panel TODO).
+
+\begin{tikzpicture}
+\begin{groupplot}[
+  group style={group size=1 by 3, vertical sep=0.9cm},
+  width=16cm, height=4.2cm,
+  view={0}{90},
+  colormap name=safetyHeat,
+  point meta min=0, point meta max=1,
+  xmin=-0.5, xmax=51.5,
+  ymin=-0.5, ymax=6.5,
+  xtick={0, 10, 20, 30, 40, 51},
+  xticklabels={$F_{0}$, $F_{10}$, $F_{20}$, $F_{30}$, $F_{40}$, $F_{51}$},
+  ytick={0,1,2,3,4,5,6},
+  yticklabels={OPD (e1), OPD --- final, SFT, SFT (e1), SFT + OPD,
+               Teacher, Vanilla},
+  tick align=outside, tick pos=left,
+  enlargelimits=false,
+  colorbar style={
+    width=0.35cm,
+    tick align=outside,
+    ytick={0, 0.25, 0.5, 0.75, 1.0},
+    yticklabel={\pgfmathprintnumber{\tick}},
+    ylabel={Fact pass rate},
+    ylabel style={font=\footnotesize},
+    yticklabel style={font=\footnotesize},
+  },
+]
+
+\nextgroupplot[title={Llama 8B}, colorbar right]
+  \addplot[matrix plot*, mesh/cols=52, point meta=explicit]
+    table[x=fact_idx, y=method_idx, meta=pass_rate, col sep=space]
+    {data/heatmap_safe_sage_llama8b.dat};
+
+\nextgroupplot[title={Qwen 4B}]
+  \addplot[matrix plot*, mesh/cols=52, point meta=explicit]
+    table[x=fact_idx, y=method_idx, meta=pass_rate, col sep=space]
+    {data/heatmap_safe_sage_qwen4b.dat};
+
+\nextgroupplot[title={GPT-OSS 20B}]
+  \addplot[matrix plot*, mesh/cols=52, point meta=explicit]
+    table[x=fact_idx, y=method_idx, meta=pass_rate, col sep=space]
+    {data/heatmap_safe_sage_gptoss20b.dat};
+
+\end{groupplot}
+
+\end{tikzpicture}

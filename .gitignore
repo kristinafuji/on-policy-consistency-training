@@ -1,0 +1,57 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+# Environment and secrets
+.env
+.env-tinker
+
+# macOS
+.DS_Store
+
+# Training outputs
+logs/
+inference_results/
+eval_results/
+eval_results_*/
+
+# Evaluation outputs
+plots/
+*.schema.json
+
+# Caches
+unsloth_compiled_cache/
+datasets/*/cache-*.arrow
+
+# W&B local files
+wandb/
+
+testing/
+
+# Test files
+tests/
+
+# Dataset subsets
+datasets/offpolicy-qwen3-4b/
+datasets/sanity-check-subset/
+datasets/truthfulqa-new-mc/
+
+# Personal progress trackers / one-off analysis
+SWEEP1_EVAL_STATUS.md
+/scripts/
+
+# LaTeX build artifacts in figures/ (sageeval-figures.pdf itself is checked in)
+figures/sageeval-figures.aux
+figures/sageeval-figures.log
+figures/sageeval-figures.fls
+figures/sageeval-figures.fdb_latexmk
+figures/sageeval-figures.synctex.gz
+figures/sageeval-figures.out
+figures/sageeval-figures.toc

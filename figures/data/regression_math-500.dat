@@ -1,0 +1,16 @@
+family_idx  method_idx  method  accuracy_pct  acc_lo_pct  acc_hi_pct
+0  0  opd_e1  41.2  37  45.4
+0  1  opd_final  42.6  38.2  46.8
+0  2  sft  41.8  37.395  45.8
+0  3  sft_e1  41.6  37.395  45.8
+0  4  sft_opd  11.2  8.6  13.8
+1  0  opd_e1  87.4  84.595  90.2
+1  1  opd_final  86.8  83.8  89.8
+1  2  sft  87  83.995  89.8
+1  3  sft_e1  88.4  85.4  91.4
+1  4  sft_opd  87  84.195  89.8
+2  0  opd_e1  87.8  84.8  90.4
+2  1  opd_final  86.8  83.6  89.805
+2  2  sft  88.8  86  91.405
+2  3  sft_e1  87.8  85.195  90.8
+2  4  sft_opd  88  85.395  91

@@ -1,0 +1,32 @@
+{
+  "citation": "",
+  "description": "",
+  "features": {
+    "safety_fact": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "prompt": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "augmentation_category": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "safety_category": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "prompt_type": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "version": {
+      "dtype": "string",
+      "_type": "Value"
+    }
+  },
+  "homepage": "",
+  "license": ""
+}

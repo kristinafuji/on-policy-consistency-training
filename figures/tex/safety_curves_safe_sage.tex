@@ -1,0 +1,126 @@
+% Safe-SAGE-Eval safety curves — 3 panels (one per model family).
+% x = safety threshold bucket (categorical); y = % facts meeting threshold.
+% Each panel renders 6 CI bands + 6 mean lines (SFT + OPD dropped). A shared
+% legend is rendered below the groupplot via `legend to name`.
+%
+% Per-method \addplot blocks are explicit (not foreach) because pgfplots
+% parses styles like `sty/opd_e1` at option time, before \foreach would
+% expand \m.
+
+\begin{tikzpicture}
+\begin{groupplot}[
+  group style={group size=3 by 1, horizontal sep=1.0cm},
+  width=8.4cm, height=7.2cm,
+  xmin=-0.4, xmax=8.4,
+  ymin=-2, ymax=104,
+  xtick={0,1,2,3,4,5,6,7,8},
+  xticklabels={0\%,36\%,68\%,84\%,92\%,96\%,98\%,99\%,100\%},
+  x tick label style={rotate=45, anchor=east, font=\footnotesize},
+  ytick={0,20,40,60,80,100},
+  yticklabel={\pgfmathprintnumber{\tick}\%},
+  xlabel={Safety threshold},
+  ylabel={Facts meeting threshold},
+  ymajorgrids, major grid style={gridMuted, line width=0.4pt},
+  legend image post style={line width=1.2pt},
+]
+
+% ---- Panel 1: Llama 8B (only panel that publishes legend entries) ------
+\nextgroupplot[title={Llama 8B}, legend to name=safeSageLegend, legend columns=6,
+               legend style={/tikz/every even column/.append style={column sep=8pt},
+                             draw=none, fill=none, font=\footnotesize}]
+  % opd_e1
+  \addplot[name path=llama-opd_e1-lo, draw=none, forget plot] table[x=idx, y=lo, col sep=space] {data/safety_safe_sage_llama8b_opd_e1.dat};
+  \addplot[name path=llama-opd_e1-hi, draw=none, forget plot] table[x=idx, y=hi, col sep=space] {data/safety_safe_sage_llama8b_opd_e1.dat};
+  \addplot[fill/opd_e1, forget plot] fill between[of=llama-opd_e1-lo and llama-opd_e1-hi];
+  \addplot[sty/opd_e1] table[x=idx, y=pct, col sep=space] {data/safety_safe_sage_llama8b_opd_e1.dat};
+  \addlegendentry{OPD (e1)}
+  % opd_final
+  \addplot[name path=llama-opd_final-lo, draw=none, forget plot] table[x=idx, y=lo, col sep=space] {data/safety_safe_sage_llama8b_opd_final.dat};
+  \addplot[name path=llama-opd_final-hi, draw=none, forget plot] table[x=idx, y=hi, col sep=space] {data/safety_safe_sage_llama8b_opd_final.dat};
+  \addplot[fill/opd_final, forget plot] fill between[of=llama-opd_final-lo and llama-opd_final-hi];
+  \addplot[sty/opd_final] table[x=idx, y=pct, col sep=space] {data/safety_safe_sage_llama8b_opd_final.dat};
+  \addlegendentry{OPD --- final}
+  % sft
+  \addplot[name path=llama-sft-lo, draw=none, forget plot] table[x=idx, y=lo, col sep=space] {data/safety_safe_sage_llama8b_sft.dat};
+  \addplot[name path=llama-sft-hi, draw=none, forget plot] table[x=idx, y=hi, col sep=space] {data/safety_safe_sage_llama8b_sft.dat};
+  \addplot[fill/sft, forget plot] fill between[of=llama-sft-lo and llama-sft-hi];
+  \addplot[sty/sft] table[x=idx, y=pct, col sep=space] {data/safety_safe_sage_llama8b_sft.dat};
+  \addlegendentry{SFT}
+  % sft_e1
+  \addplot[name path=llama-sft_e1-lo, draw=none, forget plot] table[x=idx, y=lo, col sep=space] {data/safety_safe_sage_llama8b_sft_e1.dat};
+  \addplot[name path=llama-sft_e1-hi, draw=none, forget plot] table[x=idx, y=hi, col sep=space] {data/safety_safe_sage_llama8b_sft_e1.dat};
+  \addplot[fill/sft_e1, forget plot] fill between[of=llama-sft_e1-lo and llama-sft_e1-hi];
+  \addplot[sty/sft_e1] table[x=idx, y=pct, col sep=space] {data/safety_safe_sage_llama8b_sft_e1.dat};
+  \addlegendentry{SFT (e1)}
+  % teacher
+  \addplot[name path=llama-teacher-lo, draw=none, forget plot] table[x=idx, y=lo, col sep=space] {data/safety_safe_sage_llama8b_teacher.dat};
+  \addplot[name path=llama-teacher-hi, draw=none, forget plot] table[x=idx, y=hi, col sep=space] {data/safety_safe_sage_llama8b_teacher.dat};
+  \addplot[fill/teacher, forget plot] fill between[of=llama-teacher-lo and llama-teacher-hi];
+  \addplot[sty/teacher] table[x=idx, y=pct, col sep=space] {data/safety_safe_sage_llama8b_teacher.dat};
+  \addlegendentry{Teacher Cheat Oracle}
+  % vanilla
+  \addplot[name path=llama-vanilla-lo, draw=none, forget plot] table[x=idx, y=lo, col sep=space] {data/safety_safe_sage_llama8b_vanilla.dat};
+  \addplot[name path=llama-vanilla-hi, draw=none, forget plot] table[x=idx, y=hi, col sep=space] {data/safety_safe_sage_llama8b_vanilla.dat};
+  \addplot[fill/vanilla, forget plot] fill between[of=llama-vanilla-lo and llama-vanilla-hi];
+  \addplot[sty/vanilla] table[x=idx, y=pct, col sep=space] {data/safety_safe_sage_llama8b_vanilla.dat};
+  \addlegendentry{Vanilla (no safety fact)}
+% ---- Panel 2: Qwen 4B --------------------------------------------------
+\nextgroupplot[title={Qwen 4B}, yticklabel=\empty, ylabel=\empty]
+  \addplot[name path=qwen-opd_e1-lo, draw=none, forget plot] table[x=idx, y=lo, col sep=space] {data/safety_safe_sage_qwen4b_opd_e1.dat};
+  \addplot[name path=qwen-opd_e1-hi, draw=none, forget plot] table[x=idx, y=hi, col sep=space] {data/safety_safe_sage_qwen4b_opd_e1.dat};
+  \addplot[fill/opd_e1, forget plot] fill between[of=qwen-opd_e1-lo and qwen-opd_e1-hi];
+  \addplot[sty/opd_e1, forget plot] table[x=idx, y=pct, col sep=space] {data/safety_safe_sage_qwen4b_opd_e1.dat};
+  \addplot[name path=qwen-opd_final-lo, draw=none, forget plot] table[x=idx, y=lo, col sep=space] {data/safety_safe_sage_qwen4b_opd_final.dat};
+  \addplot[name path=qwen-opd_final-hi, draw=none, forget plot] table[x=idx, y=hi, col sep=space] {data/safety_safe_sage_qwen4b_opd_final.dat};
+  \addplot[fill/opd_final, forget plot] fill between[of=qwen-opd_final-lo and qwen-opd_final-hi];
+  \addplot[sty/opd_final, forget plot] table[x=idx, y=pct, col sep=space] {data/safety_safe_sage_qwen4b_opd_final.dat};
+  \addplot[name path=qwen-sft-lo, draw=none, forget plot] table[x=idx, y=lo, col sep=space] {data/safety_safe_sage_qwen4b_sft.dat};
+  \addplot[name path=qwen-sft-hi, draw=none, forget plot] table[x=idx, y=hi, col sep=space] {data/safety_safe_sage_qwen4b_sft.dat};
+  \addplot[fill/sft, forget plot] fill between[of=qwen-sft-lo and qwen-sft-hi];
+  \addplot[sty/sft, forget plot] table[x=idx, y=pct, col sep=space] {data/safety_safe_sage_qwen4b_sft.dat};
+  \addplot[name path=qwen-sft_e1-lo, draw=none, forget plot] table[x=idx, y=lo, col sep=space] {data/safety_safe_sage_qwen4b_sft_e1.dat};
+  \addplot[name path=qwen-sft_e1-hi, draw=none, forget plot] table[x=idx, y=hi, col sep=space] {data/safety_safe_sage_qwen4b_sft_e1.dat};
+  \addplot[fill/sft_e1, forget plot] fill between[of=qwen-sft_e1-lo and qwen-sft_e1-hi];
+  \addplot[sty/sft_e1, forget plot] table[x=idx, y=pct, col sep=space] {data/safety_safe_sage_qwen4b_sft_e1.dat};
+  \addplot[name path=qwen-teacher-lo, draw=none, forget plot] table[x=idx, y=lo, col sep=space] {data/safety_safe_sage_qwen4b_teacher.dat};
+  \addplot[name path=qwen-teacher-hi, draw=none, forget plot] table[x=idx, y=hi, col sep=space] {data/safety_safe_sage_qwen4b_teacher.dat};
+  \addplot[fill/teacher, forget plot] fill between[of=qwen-teacher-lo and qwen-teacher-hi];
+  \addplot[sty/teacher, forget plot] table[x=idx, y=pct, col sep=space] {data/safety_safe_sage_qwen4b_teacher.dat};
+  \addplot[name path=qwen-vanilla-lo, draw=none, forget plot] table[x=idx, y=lo, col sep=space] {data/safety_safe_sage_qwen4b_vanilla.dat};
+  \addplot[name path=qwen-vanilla-hi, draw=none, forget plot] table[x=idx, y=hi, col sep=space] {data/safety_safe_sage_qwen4b_vanilla.dat};
+  \addplot[fill/vanilla, forget plot] fill between[of=qwen-vanilla-lo and qwen-vanilla-hi];
+  \addplot[sty/vanilla, forget plot] table[x=idx, y=pct, col sep=space] {data/safety_safe_sage_qwen4b_vanilla.dat};
+  % Qwen safe-sage baselines don't exist on disk.
+% ---- Panel 3: GPT-OSS 20B -----
+\nextgroupplot[title={GPT-OSS 20B}, yticklabel=\empty, ylabel=\empty]
+  \addplot[name path=gpt-opd_e1-lo, draw=none, forget plot] table[x=idx, y=lo, col sep=space] {data/safety_safe_sage_gptoss20b_opd_e1.dat};
+  \addplot[name path=gpt-opd_e1-hi, draw=none, forget plot] table[x=idx, y=hi, col sep=space] {data/safety_safe_sage_gptoss20b_opd_e1.dat};
+  \addplot[fill/opd_e1, forget plot] fill between[of=gpt-opd_e1-lo and gpt-opd_e1-hi];
+  \addplot[sty/opd_e1, forget plot] table[x=idx, y=pct, col sep=space] {data/safety_safe_sage_gptoss20b_opd_e1.dat};
+  \addplot[name path=gpt-opd_final-lo, draw=none, forget plot] table[x=idx, y=lo, col sep=space] {data/safety_safe_sage_gptoss20b_opd_final.dat};
+  \addplot[name path=gpt-opd_final-hi, draw=none, forget plot] table[x=idx, y=hi, col sep=space] {data/safety_safe_sage_gptoss20b_opd_final.dat};
+  \addplot[fill/opd_final, forget plot] fill between[of=gpt-opd_final-lo and gpt-opd_final-hi];
+  \addplot[sty/opd_final, forget plot] table[x=idx, y=pct, col sep=space] {data/safety_safe_sage_gptoss20b_opd_final.dat};
+  \addplot[name path=gpt-sft-lo, draw=none, forget plot] table[x=idx, y=lo, col sep=space] {data/safety_safe_sage_gptoss20b_sft.dat};
+  \addplot[name path=gpt-sft-hi, draw=none, forget plot] table[x=idx, y=hi, col sep=space] {data/safety_safe_sage_gptoss20b_sft.dat};
+  \addplot[fill/sft, forget plot] fill between[of=gpt-sft-lo and gpt-sft-hi];
+  \addplot[sty/sft, forget plot] table[x=idx, y=pct, col sep=space] {data/safety_safe_sage_gptoss20b_sft.dat};
+  \addplot[name path=gpt-sft_e1-lo, draw=none, forget plot] table[x=idx, y=lo, col sep=space] {data/safety_safe_sage_gptoss20b_sft_e1.dat};
+  \addplot[name path=gpt-sft_e1-hi, draw=none, forget plot] table[x=idx, y=hi, col sep=space] {data/safety_safe_sage_gptoss20b_sft_e1.dat};
+  \addplot[fill/sft_e1, forget plot] fill between[of=gpt-sft_e1-lo and gpt-sft_e1-hi];
+  \addplot[sty/sft_e1, forget plot] table[x=idx, y=pct, col sep=space] {data/safety_safe_sage_gptoss20b_sft_e1.dat};
+  \addplot[name path=gpt-teacher-lo, draw=none, forget plot] table[x=idx, y=lo, col sep=space] {data/safety_safe_sage_gptoss20b_teacher.dat};
+  \addplot[name path=gpt-teacher-hi, draw=none, forget plot] table[x=idx, y=hi, col sep=space] {data/safety_safe_sage_gptoss20b_teacher.dat};
+  \addplot[fill/teacher, forget plot] fill between[of=gpt-teacher-lo and gpt-teacher-hi];
+  \addplot[sty/teacher, forget plot] table[x=idx, y=pct, col sep=space] {data/safety_safe_sage_gptoss20b_teacher.dat};
+  \addplot[name path=gpt-vanilla-lo, draw=none, forget plot] table[x=idx, y=lo, col sep=space] {data/safety_safe_sage_gptoss20b_vanilla.dat};
+  \addplot[name path=gpt-vanilla-hi, draw=none, forget plot] table[x=idx, y=hi, col sep=space] {data/safety_safe_sage_gptoss20b_vanilla.dat};
+  \addplot[fill/vanilla, forget plot] fill between[of=gpt-vanilla-lo and gpt-vanilla-hi];
+  \addplot[sty/vanilla, forget plot] table[x=idx, y=pct, col sep=space] {data/safety_safe_sage_gptoss20b_vanilla.dat};
+\end{groupplot}
+
+\node[anchor=north, yshift=-1.0cm]
+  at ($(group c1r1.south east)!0.5!(group c3r1.south west)$)
+  {\pgfplotslegendfromname{safeSageLegend}};
+
+\end{tikzpicture}
